@@ -1,7 +1,23 @@
-from sqlalchemy import create_engine
-
-db_uri = "sqlite:///Dal/DB.db"
+from sqlalchemy import create_engine,MetaData,Table,inspect,Column,Integer,String
+dbPath = 'Dal/DB.db'
+db_uri = 'sqlite:///{}'.format(dbPath)
 engine = create_engine(db_uri)
+# Create MetaData instance
+# metadata = MetaData(engine, reflect=True)
+# print(metadata.tables)
+
+
+# inspector = inspect(engine)
+
+# # Get table information
+# print(inspector.get_table_names())
+
+# # Get column information
+# print(inspector.get_columns('Commands'))
+
+# # Get Table
+# ex_table = metadata.tables['Commands']
+# print(ex_table)
 
 # DBAPI - PEP249
 # create table
@@ -9,14 +25,21 @@ engine = create_engine(db_uri)
 #                'id INTEGER NOT NULL,'
 #                'name VARCHAR, '
 #                'PRIMARY KEY (id));')
-# insert a raw
-# engine.execute('INSERT INTO "EX1" '
-#                '(id, name) '
-#                'VALUES (1,"raw1")')
+# table = Table('Commands',metadata,autoload=True)
+
+def InsertCmd(Name,Ctext):
+   query='''Insert into "Commands" (Name,Ctext) Values('{}','{}')'''.format(Name,Ctext) 
+   print(query)
+   engine.execute(query)
+
+# InsertCmd('ipconfig','ipconfig')
+
 
 # select *
-result = engine.execute('SELECT * FROM '+'"Commands"')
-for _r in result:
+def get_cmd():
+   result = engine.execute('SELECT * FROM '+'"Commands"')
+   return result
+for _r in get_cmd():
    print(_r)
 
 # delete *

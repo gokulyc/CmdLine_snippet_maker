@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine,MetaData,Table,inspect,Column,Integer,String
+from sqlalchemy import create_engine, MetaData, Table, inspect, Column, Integer, String
 dbPath = 'Dal/DB.db'
 db_uri = 'sqlite:///{}'.format(dbPath)
 engine = create_engine(db_uri)
@@ -27,22 +27,37 @@ engine = create_engine(db_uri)
 #                'PRIMARY KEY (id));')
 # table = Table('Commands',metadata,autoload=True)
 
-def InsertCmd(Name,Ctext):
-   query='''Insert into "Commands" (Name,Ctext) Values('{}','{}')'''.format(Name,Ctext) 
-   print(query)
-   engine.execute(query)
+def InsertCmd(Name, Ctext):
+    query = '''Insert into "Commands" (Name,Ctext) Values('{}','{}')'''.format(
+        Name, Ctext)
+   #  print(query)
+    engine.execute(query)
 
 # InsertCmd('ipconfig','ipconfig')
 
 
 # select *
-def get_cmd():
-   result = engine.execute('SELECT * FROM '+'"Commands"')
-   return result
-for _r in get_cmd():
-   print(_r)
+def get_cmd(cid=0):
+   """
+   Optional Cid value in int format to get the record, use 0 for all records
+   """
+   # print("Cid :",cid)
 
-# delete *
-# engine.execute('DELETE from "EX1" where id=1;')
-# result = engine.execute('SELECT * FROM "EX1"')
-# print(result.fetchall())
+   if(cid == 0):
+      result = engine.execute('SELECT * FROM '+'"Commands"')
+   else:
+      result = engine.execute(('SELECT * FROM '+'"Commands" where Cid={}').format(cid))
+   return result
+
+
+
+
+def delete(cid):
+    query='delete from Commands where Cid={}'.format(cid)
+    print(query)
+    engine.execute(query)
+
+# delete(4)
+
+for _r in get_cmd(0):
+    print(_r)

@@ -28,10 +28,13 @@ engine = create_engine(db_uri)
 # table = Table('Commands',metadata,autoload=True)
 
 def InsertCmd(Name, Ctext):
-    query = '''Insert into "Commands" (Name,Ctext) Values('{}','{}')'''.format(
-        Name, Ctext)
+   """
+   Requires Name of command and Command Text
+   """
+   query = '''Insert into "Commands" (Name,Ctext) Values('{}','{}')'''.format(
+      Name, Ctext)
    #  print(query)
-    engine.execute(query)
+   engine.execute(query)
 
 # InsertCmd('ipconfig','ipconfig')
 
@@ -39,7 +42,9 @@ def InsertCmd(Name, Ctext):
 # select *
 def get_cmd(cid=0):
    """
-   Optional Cid value in int format to get the record, use 0 for all records
+   Optional Cid value in int format to get the record, use 0 for all records in list type
+   ex :  for _r in get_cmd(0):
+            print(_r)
    """
    # print("Cid :",cid)
 
@@ -49,15 +54,14 @@ def get_cmd(cid=0):
       result = engine.execute(('SELECT * FROM '+'"Commands" where Cid={}').format(cid))
    return result
 
-
-
-
 def delete(cid):
-    query='delete from Commands where Cid={}'.format(cid)
-    print(query)
-    engine.execute(query)
+   """
+   need command id (cid) to remove the record
+   ex: delete(4)
+   """
+   query='delete from Commands where Cid={}'.format(cid)
+   #  print(query)
+   engine.execute(query)
 
-# delete(4)
-
-for _r in get_cmd(0):
-    print(_r)
+# for _r in get_cmd(0):
+#     print(_r)
